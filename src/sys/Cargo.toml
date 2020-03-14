@@ -1,5 +1,7 @@
 [package]
-authors = ["Richard Diamond <wichard@vitalitystudios.com>", "Kornel Lesiński <kornel@geekhood.net>"]
+name = "libvpx-native-sys"
+version = "5.0.0"
+authors = ["Kornel Lesiński <kornel@geekhood.net>", "Richard Diamond <wichard@vitalitystudios.com>"]
 build = "build.rs"
 categories = ["multimedia::video", "multimedia::encoding", "api-bindings"]
 description = "Rust bindings to libvpx"
@@ -9,9 +11,7 @@ license = "MPL-2.0"
 readme = "README.md"
 keywords = ["vp9", "webm"]
 links = "vpx"
-name = "libvpx-native-sys"
 repository = "https://github.com/kornelski/rust-vpx"
-version = "4.0.7"
 
 [build-dependencies]
 pkg-config = "0.3.5"
