@@ -67,18 +67,6 @@ pub type Rect = ffi::vpx_image_rect_t;
 #[derive(Clone, Copy, Eq, PartialEq, Hash, Debug)]
 #[allow(non_camel_case_types)]
 pub enum Format {
-    RGB24,
-    RGB32 { le: bool, },
-    RGB565 { le: bool, },
-    RGB555 { le: bool, },
-
-    UYVY,
-    YUY2,
-    YVYU,
-    BGR24,
-    ARGB,
-    BGRA,
-
     YV12_VPX,
     I420_VPX,
 
@@ -88,9 +76,6 @@ pub enum Format {
     I422 { hi_bit_depth: bool },
     I440 { hi_bit_depth: bool },
     I444 { hi_bit_depth: bool },
-
-    /// Should be named `444A`.
-    I444A,
 }
 impl Into<ffi::vpx_img_fmt_t> for Format {
     fn into(self) -> ffi::vpx_img_fmt_t {
@@ -98,23 +83,8 @@ impl Into<ffi::vpx_img_fmt_t> for Format {
 
         use ffi::vpx_img_fmt::*;
         match self {
-            RGB24 => VPX_IMG_FMT_RGB24,
-            RGB32 { le: false, } => VPX_IMG_FMT_RGB32,
-            RGB32 { le: true, } => VPX_IMG_FMT_RGB32_LE,
-            RGB565 { le: false, } => VPX_IMG_FMT_RGB565,
-            RGB565 { le: true, } => VPX_IMG_FMT_RGB565_LE,
-            RGB555 { le: false, } => VPX_IMG_FMT_RGB555,
-            RGB555 { le: true, } => VPX_IMG_FMT_RGB555_LE,
-
-            UYVY => VPX_IMG_FMT_UYVY,
-            YUY2 => VPX_IMG_FMT_YUY2,
-            YVYU => VPX_IMG_FMT_YVYU,
-            BGR24 => VPX_IMG_FMT_BGR24,
-            ARGB => VPX_IMG_FMT_ARGB,
-            BGRA => VPX_IMG_FMT_ARGB_LE,
-
-            YV12_VPX => VPX_IMG_FMT_VPXYV12,
-            I420_VPX => VPX_IMG_FMT_VPXI420,
+            YV12_VPX => VPX_IMG_FMT_YV12,
+            I420_VPX => VPX_IMG_FMT_I420,
 
             YV12 => VPX_IMG_FMT_YV12,
 
@@ -127,9 +97,6 @@ impl Into<ffi::vpx_img_fmt_t> for Format {
             I422 { hi_bit_depth: true } => VPX_IMG_FMT_I42216,
             I440 { hi_bit_depth: true } => VPX_IMG_FMT_I44416,
             I444 { hi_bit_depth: true } => VPX_IMG_FMT_I44016,
-
-            /// Should be named `444A`.
-            I444A => VPX_IMG_FMT_444A,
         }
     }
 }

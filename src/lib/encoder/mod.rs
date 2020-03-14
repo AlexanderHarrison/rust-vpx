@@ -95,7 +95,6 @@ pub trait Encoder: InternalEncoder
     }
 
     fn packets<T: PacketWriter>(&mut self, dest: &mut T) -> Result<(), ::std::io::Error> {
-        use std::mem::transmute;
         use std::slice::from_raw_parts;
         let mut iter: ffi::vpx_codec_iter_t = 0 as *mut _;
         unsafe {
@@ -104,25 +103,25 @@ pub trait Encoder: InternalEncoder
                                                      &mut iter as *mut _);
                 if pkt.is_null() { return Ok(()); }
 
-                let pkt: &ffi::vpx_codec_cx_pkt_t = transmute(pkt);
+                let pkt: &ffi::vpx_codec_cx_pkt_t = &*pkt;
                 match pkt.kind {
                     ffi::vpx_codec_cx_pkt_kind::VPX_CODEC_CX_FRAME_PKT => {
-                        let frame: &ffi::vpx_codec_cx_pkt__bindgen_ty_1__bindgen_ty_1 = transmute(pkt.data.frame.as_ref());
+                        let frame: &ffi::vpx_codec_cx_pkt__bindgen_ty_1__bindgen_ty_1 = &pkt.data.frame;
                         let frame: Frame = From::from(frame);
                         dest.write_frame(&frame)?;
                     },
                     ffi::vpx_codec_cx_pkt_kind::VPX_CODEC_STATS_PKT => {
-                        let buf: &ffi::vpx_fixed_buf_t = transmute(pkt.data.twopass_stats.as_ref());
+                        let buf: &ffi::vpx_fixed_buf_t = &pkt.data.twopass_stats;
                         let buf = from_raw_parts(buf.buf as *const u8, buf.sz as usize);
                         dest.write_two_pass_stats(buf)?;
                     },
                     ffi::vpx_codec_cx_pkt_kind::VPX_CODEC_FPMB_STATS_PKT => {
-                        let buf: &ffi::vpx_fixed_buf_t = transmute(pkt.data.twopass_stats.as_ref());
+                        let buf: &ffi::vpx_fixed_buf_t = &pkt.data.twopass_stats;
                         let buf = from_raw_parts(buf.buf as *const u8, buf.sz as usize);
                         dest.write_two_pass_stats(buf)?;
                     },
                     ffi::vpx_codec_cx_pkt_kind::VPX_CODEC_PSNR_PKT => {
-                        let psnr: &ffi::vpx_codec_cx_pkt__bindgen_ty_1_vpx_psnr_pkt = transmute(pkt.data.psnr.as_ref());
+                        let psnr: &ffi::vpx_codec_cx_pkt__bindgen_ty_1_vpx_psnr_pkt = &pkt.data.psnr;
                         dest.write_psnr(&psnr.samples, &psnr.sse, &psnr.psnr)?;
                     },
                     kind => {

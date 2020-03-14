@@ -1,18 +1,19 @@
 [package]
-authors = ["Richard Diamond <wichard@vitalitystudios.com>"]
+version = "0.4.0"
+authors = ["Richard Diamond <wichard@vitalitystudios.com>", "Kornel <kornel@geekhood.net>"]
 categories = ["multimedia::video", "multimedia::encoding", "api-bindings"]
 description = "Rust idiomatic wrapper to libvpx"
 keywords = ["vp9", "vp8", "webm", "video-encoder", "video-decoder"]
 license = "MPL-2.0"
 name = "vpx"
 repository = "https://github.com/DiamondLovesYou/rust-vpx"
-version = "0.3.0"
 
 [dependencies]
-libc = "0.2.20"
+libc = "0.2.67"
 
 [dependencies.libvpx-native-sys]
 path = "src/sys"
+version = "5"
 
 [lib]
 name = "vpx"
