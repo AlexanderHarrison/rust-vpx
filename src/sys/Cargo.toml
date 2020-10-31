@@ -12,6 +12,7 @@ readme = "README.md"
 keywords = ["vp9", "webm"]
 links = "vpx"
 repository = "https://github.com/kornelski/rust-vpx"
+edition = "2018"
 
 [build-dependencies]
 pkg-config = "0.3.19"

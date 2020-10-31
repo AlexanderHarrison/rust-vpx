@@ -17,7 +17,7 @@ pub enum AQ_MODE {
 }
 
 // Back compat
-pub use vpx_codec_err_t::*;
+pub use crate::vpx_codec_err_t::*;
 
 impl Default for vpx_codec_enc_cfg {
     fn default() -> Self {

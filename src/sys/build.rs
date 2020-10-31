@@ -1,8 +1,4 @@
-#[cfg(feature = "generate")]
-extern crate bindgen;
-extern crate pkg_config as pkg;
-extern crate semver_parser;
-
+use pkg_config as pkg;
 use semver_parser::version;
 use semver_parser::version::Version;
 use std::env;
