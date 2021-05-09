@@ -2,11 +2,9 @@ use std::borrow::Cow;
 use std::ffi::{CStr};
 use std::mem::transmute;
 
-extern crate vpx_sys as ffi;
-extern crate libc;
+use vpx_sys as ffi;
 
 pub mod encoder;
-
 
 #[derive(Clone, Copy, Eq, PartialEq, Debug)]
 pub enum Error {
@@ -24,7 +22,7 @@ pub enum Error {
     ListEnd,
 }
 
-use ffi::vpx_codec_err_t as ErrorEnum;
+use crate::ffi::vpx_codec_err_t as ErrorEnum;
 impl From<ErrorEnum> for Error {
     fn from(v: ErrorEnum) -> Error {
         match v {
@@ -42,7 +40,7 @@ impl From<ErrorEnum> for Error {
 }
 
 impl std::fmt::Display for Error {
-    fn fmt(&self, fmt: &mut std::fmt::Formatter) -> std::fmt::Result {
+    fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         <Self as std::fmt::Debug>::fmt(self,fmt)
     }
 }
@@ -79,9 +77,9 @@ pub enum Format {
 }
 impl Into<ffi::vpx_img_fmt_t> for Format {
     fn into(self) -> ffi::vpx_img_fmt_t {
-        use Format::*;
+        use crate::Format::*;
 
-        use ffi::vpx_img_fmt::*;
+        use crate::ffi::vpx_img_fmt::*;
         match self {
             YV12_VPX => VPX_IMG_FMT_YV12,
             I420_VPX => VPX_IMG_FMT_I420,
@@ -113,7 +111,7 @@ pub enum ColorSpace {
 }
 impl Into<ffi::vpx_color_space_t> for ColorSpace {
     fn into(self) -> ffi::vpx_color_space_t {
-        use ffi::vpx_color_space::*;
+        use crate::ffi::vpx_color_space::*;
         match self {
             ColorSpace::BT601 => VPX_CS_BT_601,
             ColorSpace::BT709 => VPX_CS_BT_709,
@@ -133,7 +131,7 @@ impl<'a> Image<'a> {
     pub fn new(data: Cow<'a, [u8]>, fmt: Format,
                color_space: ColorSpace,
                width: u32, height: u32,
-               stride: u32) -> Image
+               stride: u32) -> Image<'_>
     {
         let mut t: ffi::vpx_image_t = Default::default();
         unsafe {
@@ -215,10 +213,10 @@ impl<'a> From<&'a ffi::vpx_codec_cx_pkt__bindgen_ty_1__bindgen_ty_1> for Frame<'
     }
 }
 
-pub use ffi::vpx_rc_mode::*;
-pub use ffi::vpx_bit_depth::*;
-pub use ffi::vpx_codec_err_t::*;
-pub use ffi::vpx_rational;
+pub use crate::ffi::vpx_rc_mode::*;
+pub use crate::ffi::vpx_bit_depth::*;
+pub use crate::ffi::vpx_codec_err_t::*;
+pub use crate::ffi::vpx_rational;
 
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]
 pub enum Kind {

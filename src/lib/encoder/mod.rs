@@ -1,7 +1,5 @@
-use ffi;
+use vpx_sys as ffi;
 use super::{Error, Frame, Image};
-
-use libc;
 
 pub mod vp9;
 
@@ -54,7 +52,7 @@ pub trait Encoder: InternalEncoder
     }
 
     /// `duration` must be non-zero.
-    fn encode(&mut self, image: &Image,
+    fn encode(&mut self, image: &Image<'_>,
               pts: ffi::vpx_codec_pts_t,
               duration: u64,
               flags: FrameFlags,
@@ -107,7 +105,7 @@ pub trait Encoder: InternalEncoder
                 match pkt.kind {
                     ffi::vpx_codec_cx_pkt_kind::VPX_CODEC_CX_FRAME_PKT => {
                         let frame: &ffi::vpx_codec_cx_pkt__bindgen_ty_1__bindgen_ty_1 = &pkt.data.frame;
-                        let frame: Frame = From::from(frame);
+                        let frame: Frame<'_> = From::from(frame);
                         dest.write_frame(&frame)?;
                     },
                     ffi::vpx_codec_cx_pkt_kind::VPX_CODEC_STATS_PKT => {

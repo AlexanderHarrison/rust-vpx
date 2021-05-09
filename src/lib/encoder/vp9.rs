@@ -1,7 +1,5 @@
-use ffi;
-
-use {InternalInterface, Error, Kind};
-
+use vpx_sys as ffi;
+use crate::{InternalInterface, Error, Kind};
 use std::ops::{Deref, DerefMut};
 
 #[derive(Debug)]
@@ -48,14 +46,14 @@ impl Default for Interface {
         Interface
     }
 }
-impl ::Interface for Interface {
+impl crate::Interface for Interface {
     type Context = Context;
     type Cfg = Cfg;
     fn kind(&self) -> Kind { Kind::Encoder }
 
-    fn create(&self, cfg: <Self as ::Interface>::Cfg,
+    fn create(&self, cfg: <Self as crate::Interface>::Cfg,
               flags: ffi::vpx_codec_flags_t) ->
-        Result<<Self as ::Interface>::Context, Error>
+        Result<<Self as crate::Interface>::Context, Error>
     {
         let mut ctx: ffi::vpx_codec_ctx_t = Default::default();
         let err = unsafe {
