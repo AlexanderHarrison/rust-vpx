@@ -1,5 +1,5 @@
 use std::borrow::Cow;
-use std::ffi::{CStr};
+use std::ffi::CStr;
 use std::mem::transmute;
 
 use vpx_sys as ffi;
@@ -41,7 +41,7 @@ impl From<ErrorEnum> for Error {
 
 impl std::fmt::Display for Error {
     fn fmt(&self, fmt: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        <Self as std::fmt::Debug>::fmt(self,fmt)
+        <Self as std::fmt::Debug>::fmt(self, fmt)
     }
 }
 impl std::error::Error for Error {
@@ -144,7 +144,7 @@ impl<'a> Image<'a> {
         Image(t, fmt, data)
     }
 
-    pub fn get_format(&self) -> Format { self.1.clone() }
+    pub fn get_format(&self) -> Format { self.1 }
 
     pub fn set_rect(&mut self, rect: Rect) -> Result<(), ()> {
         let res = unsafe {
@@ -200,11 +200,11 @@ impl<'a> Frame<'a> {
 impl<'a> From<&'a ffi::vpx_codec_cx_pkt__bindgen_ty_1__bindgen_ty_1> for Frame<'a> {
     fn from(v: &'a ffi::vpx_codec_cx_pkt__bindgen_ty_1__bindgen_ty_1) -> Frame<'a> {
         let data: &'a [u8] = unsafe {
-            ::std::slice::from_raw_parts(v.buf as *const u8, v.sz as usize)
+            std::slice::from_raw_parts(v.buf as *const u8, v.sz as usize)
         };
 
         Frame {
-            data: data,
+            data,
             pts: v.pts as u64,
             duration: v.duration as u64,
             flags: v.flags,
@@ -213,10 +213,10 @@ impl<'a> From<&'a ffi::vpx_codec_cx_pkt__bindgen_ty_1__bindgen_ty_1> for Frame<'
     }
 }
 
-pub use crate::ffi::vpx_rc_mode::*;
 pub use crate::ffi::vpx_bit_depth::*;
 pub use crate::ffi::vpx_codec_err_t::*;
 pub use crate::ffi::vpx_rational;
+pub use crate::ffi::vpx_rc_mode::*;
 
 #[derive(Copy, Clone, Eq, PartialEq, Debug)]
 pub enum Kind {
@@ -241,7 +241,6 @@ pub trait Interface: InternalInterface + Default {
 pub trait InternalInterface {
     fn iface(&self) -> *mut ffi::vpx_codec_iface_t;
 }
-
 
 /*#[derive(Copy, Clone)]
 pub struct VP8DecoderInterface;

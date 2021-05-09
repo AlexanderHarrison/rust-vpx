@@ -1,5 +1,5 @@
 [package]
-version = "0.4.1"
+version = "0.4.2"
 authors = ["Richard Diamond <wichard@vitalitystudios.com>", "Kornel <kornel@geekhood.net>"]
 categories = ["multimedia::video", "multimedia::encoding", "api-bindings"]
 description = "Rust idiomatic wrapper to libvpx"
@@ -11,12 +11,9 @@ documentation = "https://docs.rs/vpx"
 repository = "https://github.com/kornelski/rust-vpx"
 edition = "2018"
 
-[dependencies]
-libc = "0.2.94"
-
 [dependencies.libvpx-native-sys]
 path = "src/sys"
-version = "5"
+version = "5.0.3"
 
 [lib]
 name = "vpx"

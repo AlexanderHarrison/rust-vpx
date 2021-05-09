@@ -21,17 +21,17 @@ pub use crate::vpx_codec_err_t::*;
 
 impl Default for vpx_codec_enc_cfg {
     fn default() -> Self {
-        unsafe {::std::mem::zeroed()}
+        unsafe { std::mem::zeroed() }
     }
 }
 impl Default for vpx_codec_ctx {
     fn default() -> Self {
-        unsafe {::std::mem::zeroed()}
+        unsafe { std::mem::zeroed() }
     }
 }
 impl Default for vpx_image_t {
     fn default() -> Self {
-        unsafe {::std::mem::zeroed()}
+        unsafe { std::mem::zeroed() }
     }
 }
 

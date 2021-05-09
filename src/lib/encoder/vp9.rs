@@ -1,6 +1,6 @@
-use vpx_sys as ffi;
-use crate::{InternalInterface, Error, Kind};
+use crate::{Error, InternalInterface, Kind};
 use std::ops::{Deref, DerefMut};
+use vpx_sys as ffi;
 
 #[derive(Debug)]
 pub struct Cfg(ffi::vpx_codec_enc_cfg_t);
@@ -63,10 +63,10 @@ impl crate::Interface for Interface {
                                         flags,
                                         ffi::VPX_ENCODER_ABI_VERSION as i32)
         };
-        if err != ffi::VPX_CODEC_OK {
-            Err(From::from(err))
-        } else {
+        if err == ffi::VPX_CODEC_OK {
             Ok(Context(ctx))
+        } else {
+            Err(From::from(err))
         }
     }
 }

@@ -1,10 +1,11 @@
-use vpx_sys as ffi;
 use super::{Error, Frame, Image};
+use vpx_sys as ffi;
+use std::io;
 
 pub mod vp9;
 
 pub const DL_REALTIME: u64 = 1;
-pub const DL_GOOD_QUALITY: u64 = 1000000;
+pub const DL_GOOD_QUALITY: u64 = 1_000_000;
 pub const DL_BEST_QUALITY: u64 = 0;
 
 #[derive(Copy, Clone, Eq, PartialEq)]
@@ -21,9 +22,7 @@ impl Default for FrameFlags {
 #[doc(hidden)]
 impl Into<ffi::vpx_enc_frame_flags_t> for FrameFlags {
     fn into(self) -> ffi::vpx_enc_frame_flags_t {
-        let mut flags: ffi::vpx_enc_frame_flags_t = 0;
-        if self.keyframe { flags |= 1 << 0; }
-        return flags;
+        if self.keyframe { 1 } else { 0 }
     }
 }
 impl FrameFlags {
@@ -61,9 +60,9 @@ pub trait Encoder: InternalEncoder
             ffi::vpx_codec_encode(self.get_mut_ctx(),
                                   &image.0 as *const _,
                                   pts,
-                                  duration as libc::c_ulong,
+                                  duration as _,
                                   flags.into(),
-                                  deadline as libc::c_ulong)
+                                  deadline as _)
         };
         if res != ffi::VPX_CODEC_OK {
             Err(From::from(res))
@@ -82,8 +81,8 @@ pub trait Encoder: InternalEncoder
         let res = unsafe {
             ffi::vpx_codec_encode(self.get_mut_ctx(),
                                   0 as *const _,
-                                  pts, duration as libc::c_ulong,
-                                  flags, deadline as libc::c_ulong)
+                                  pts, duration as _,
+                                  flags, deadline as _)
         };
         if res == ffi::VPX_CODEC_OK {
             Ok(())
@@ -92,14 +91,15 @@ pub trait Encoder: InternalEncoder
         }
     }
 
-    fn packets<T: PacketWriter>(&mut self, dest: &mut T) -> Result<(), ::std::io::Error> {
+    fn packets<T: PacketWriter>(&mut self, dest: &mut T) -> Result<(), io::Error> {
         use std::slice::from_raw_parts;
         let mut iter: ffi::vpx_codec_iter_t = 0 as *mut _;
         unsafe {
             loop {
-                let pkt = ffi::vpx_codec_get_cx_data(self.get_mut_ctx(),
-                                                     &mut iter as *mut _);
-                if pkt.is_null() { return Ok(()); }
+                let pkt = ffi::vpx_codec_get_cx_data(self.get_mut_ctx(), &mut iter as *mut _);
+                if pkt.is_null() {
+                    return Ok(());
+                }
 
                 let pkt: &ffi::vpx_codec_cx_pkt_t = &*pkt;
                 match pkt.kind {
@@ -138,12 +138,12 @@ pub trait InternalEncoder {
 }
 
 pub trait PacketWriter {
-    fn write_frame<'a>(&mut self, _frame: &Frame<'a>) -> Result<(), ::std::io::Error> { Ok(()) }
-    fn write_two_pass_stats(&mut self, _stats: &[u8]) -> Result<(), ::std::io::Error> { Ok(()) }
-    fn write_first_pass_mb_stats(&mut self, _stats: &[u8]) -> Result<(), ::std::io::Error> { Ok(()) }
+    fn write_frame<'a>(&mut self, _frame: &Frame<'a>) -> Result<(), io::Error> { Ok(()) }
+    fn write_two_pass_stats(&mut self, _stats: &[u8]) -> Result<(), io::Error> { Ok(()) }
+    fn write_first_pass_mb_stats(&mut self, _stats: &[u8]) -> Result<(), io::Error> { Ok(()) }
     fn write_psnr(&mut self, _samples: &[u32; 4], _sse: &[u64; 4],
-                  _psnr: &[f64; 4]) -> Result<(), ::std::io::Error> { Ok(()) }
+                  _psnr: &[f64; 4]) -> Result<(), io::Error> { Ok(()) }
     fn write_custom(&mut self,
                     _kind: ffi::vpx_codec_cx_pkt_kind,
-                    _data: &ffi::vpx_codec_cx_pkt__bindgen_ty_1) -> Result<(), ::std::io::Error> { Ok(()) }
+                    _data: &ffi::vpx_codec_cx_pkt__bindgen_ty_1) -> Result<(), io::Error> { Ok(()) }
 }
