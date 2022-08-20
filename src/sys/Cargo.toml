@@ -1,6 +1,6 @@
 [package]
 name = "libvpx-native-sys"
-version = "5.0.6"
+version = "5.0.7"
 authors = ["Kornel Lesiński <kornel@geekhood.net>", "Richard Diamond <wichard@vitalitystudios.com>"]
 build = "build.rs"
 categories = ["multimedia::video", "multimedia::encoding", "api-bindings"]
@@ -12,7 +12,7 @@ readme = "README.md"
 keywords = ["vp9", "webm"]
 links = "vpx"
 repository = "https://github.com/kornelski/rust-vpx"
-edition = "2018"
+edition = "2021"
 
 [build-dependencies]
 pkg-config = "0.3.19"
@@ -20,11 +20,11 @@ semver-parser = "0.10.2"
 
 [build-dependencies.bindgen]
 optional = true
-version = "0.59.1"
+version = "0.60.1"
 
 [features]
 default = []
-generate = ["bindgen"]
+generate = ["dep:bindgen"]
 
 [lib]
 name = "vpx_sys"
