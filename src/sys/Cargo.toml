@@ -1,6 +1,6 @@
 [package]
 name = "libvpx-native-sys"
-version = "5.0.7"
+version = "5.0.8"
 authors = ["Kornel Lesiński <kornel@geekhood.net>", "Richard Diamond <wichard@vitalitystudios.com>"]
 build = "build.rs"
 categories = ["multimedia::video", "multimedia::encoding", "api-bindings"]
