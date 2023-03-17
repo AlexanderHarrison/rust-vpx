@@ -155,7 +155,7 @@ fn generate_bindings(_ffi_header: &Path, _include_paths: &[PathBuf], _ffi_rs: &P
 #[cfg(feature = "generate")]
 fn generate_bindings(ffi_header: &Path, include_paths: &[PathBuf], ffi_rs: &Path, exact_file: &Path, _version: &str) {
     let mut b = bindgen::builder().header(ffi_header.to_str().unwrap())
-        .rust_target(bindgen::RustTarget::Stable_1_25)
+        .rust_target(bindgen::RustTarget::Stable_1_47)
         .allowlist_type("^[vV].*")
         .allowlist_var("^[vV].*")
         .allowlist_function("^[vV].*")
