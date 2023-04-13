@@ -1,6 +1,6 @@
 [package]
 name = "libvpx-native-sys"
-version = "5.0.9"
+version = "5.0.10"
 authors = ["Kornel Lesiński <kornel@geekhood.net>", "Richard Diamond <wichard@vitalitystudios.com>"]
 build = "build.rs"
 categories = ["multimedia::video", "multimedia::encoding", "api-bindings"]
@@ -20,7 +20,7 @@ semver-parser = "0.10.2"
 
 [build-dependencies.bindgen]
 optional = true
-version = "0.64.0"
+version = "0.65.1"
 
 [features]
 default = []
