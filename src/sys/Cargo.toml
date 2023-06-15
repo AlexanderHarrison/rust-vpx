@@ -15,12 +15,12 @@ repository = "https://github.com/kornelski/rust-vpx"
 edition = "2021"
 
 [build-dependencies]
-pkg-config = "0.3.26"
+pkg-config = "0.3.27"
 semver-parser = "0.10.2"
 
 [build-dependencies.bindgen]
 optional = true
-version = "0.65.1"
+version = "0.66.0"
 
 [features]
 default = []
