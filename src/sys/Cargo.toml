@@ -1,7 +1,7 @@
 [package]
 name = "libvpx-native-sys"
-version = "5.0.11"
-authors = ["Kornel Lesiński <kornel@geekhood.net>", "Richard Diamond <wichard@vitalitystudios.com>"]
+version = "5.0.15"
+authors = ["Kornel Lesiński <kornel@geekhood.net>", "Richard Diamond <wichard@vitalitystudios.com>"]
 build = "build.rs"
 categories = ["multimedia::video", "multimedia::encoding", "api-bindings"]
 description = "Rust bindings to libvpx"
@@ -29,3 +29,4 @@ generate = ["dep:bindgen"]
 [lib]
 name = "vpx_sys"
 path = "lib.rs"
+
